@@ -1,17 +1,16 @@
 
     var correctAnswer = 0;
     var incorrectAnswer = 0;
-    var timer = 20;
-    
-
+  
 // =================== questions ==========
 var questions = [
     {
     question: "What band sang Cherry Pie?",
     choices: ["Motley Crew", "Poison", "Warrant", "White Lion"],
     answer: "Warrant",
+
 }, {
-    question: "Who sang Whit It?",
+    question: "Who sang Whip It?",
     choices: ["Queen", "Devo", "Aerosmith", "Vanilla Ice"],
     answer: "Devo",
 }, {
@@ -36,7 +35,7 @@ var questions = [
     answer: "Kiss"
 }, {
     question: "Who was the original lead singer for Queen?",
-    choices: ["Freddie Mercury", "Adam Lambery", "Freddy Krueger", "Robert Plant"],
+    choices: ["Freddie Mercury", "Adam Lambert", "Freddy Krueger", "Robert Plant"],
     answer: "Freddie Mercury"
 }, {
     question: "Who sang Living After Midnight?",
@@ -48,52 +47,116 @@ var questions = [
     answer: "Malcolm Young"
 }
 ];
+
+
 // display question and choices
 var questionCounter = 0;
 function nextQuestion() {
+    console.log(questionCounter);
+    $('#choices').empty();
     $('#question').html(questions[questionCounter].question);
     for (var i = 0; i < questions[questionCounter].choices.length; i++) {
         console.log(questions[questionCounter].choices[i]);
         var choiceButton = $('<input class="button" type="button" value="' + questions[questionCounter].choices[i] + '"/>');
     $('#choices').append(choiceButton);
         console.log(choiceButton);
+        $('#missed').text(incorrectAnswer);
         
-    }
-   
+    }   
 }
 // once an answer is click on it is checked against the correct answer. 
 // onclick function for each button
-// .options is the class name given to each button
-$('.button').on('click', function() {
-    // first thing we need to do is grab the value of the button
-    // $(this) ---> provides everything associaed with the html button element that was clicked
-    var userGuess = $(this)
-    console.log(userGuess)
 
-    if(question === questions.answer) {
-        alert('You win')
-    } else {
-        alert('The correct answer is ' + questions.answer)
+$('button').click(function(){
+    startGame();
+$('button').css('display', 'none');
+$('#incorrect').css('display','inline-block');  
+$('#timer').css('display', 'inline-block');
 
-   }
+var updateTimer; 
+function updateTimer(){
+$("#timer").text(startingTime);
+}
+
+// start the clock
+var startingTime;
+function startTimer() {
+// endTimer();
+startingTime = 20;
+updateTimer();
+intervalID = setInterval(runningTime, 1000);
+}
+
+// reduce the time
+var runningTime;
+function runningTime() {
+startingTime--;
+updateTimer();
+if (startingTime === 0) {
+    incorrectAnswer++;
+    clearInterval(intervalID);
+    questionCounter++;
     nextQuestion();
-})
+    startTimer();
+}
+// console.log(startingTime);
+}
 
+// end timer if starting time is 0, and set it back to 20
+var endTimer;
+function endTimer() {
+clearInterval(intervalID);
+updateTimer();
+}
 
 
 function startGame() {
-    nextQuestion()
+nextQuestion();
+startTimer();
 }
-var selectedQuestion = [];
-$('button').click(function(){
-    startGame();
-$('button').css('display', 'none');    
 
-
-
-
+$(document).on('click', ".button", function() {
     
-    // .text(questions[questionCounter].choices[i]
+    
+    // first thing we need to do is grab the value of the button
+    // $(this) ---> provides everything associaed with the html button element that was clicked
+var userGuess = $(this)
+console.log(userGuess)
+
+if(this.value === questions[questionCounter].answer) {
+    alert('Correct');
+    questionCounter++;
+    clearInterval(intervalID);
+
+} else {
+    alert('That is incorrect, the answer is ' + questions[questionCounter].answer);
+    questionCounter++; 
+    incorrectAnswer++;
+    clearInterval(intervalID);
+    
+}
+if(questionCounter >= questions.length) {
+$("#question").css('display', 'none');
+$("#timer").css('display', 'none');
+$("#incorrect").css('display', 'none');
+    setTimeout(function() {
+        alert("YOU WIN!!!!!!");
+    }, 500);   
+startGame(); 
+}
+nextQuestion();
+
+if(incorrectAnswer === 6) {
+    $("#question").css('display', 'none');
+    $("#timer").css('display', 'none');
+    $("#incorrect").css('display', 'none');
+    setTimeout(function() {
+        alert("You lose, please play again");              
+    }, 500);   
+}
+startGame();
+      
+});
 
 // display questions on buttons
 
@@ -112,9 +175,8 @@ $('button').css('display', 'none');
 
 // if incorrect answer reaches 6 then game over alert
 
-
-
-
+// if all questions answered correctly and incorrect under 6, alert you win
+// remove question from screen
 
 })
 
