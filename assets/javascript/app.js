@@ -114,7 +114,7 @@ function startGame() {
 nextQuestion();
 startTimer();
 }
-
+// choices buttons
 $(document).on('click', ".button", function() {
     
     
@@ -122,7 +122,7 @@ $(document).on('click', ".button", function() {
     // $(this) ---> provides everything associaed with the html button element that was clicked
 var userGuess = $(this)
 console.log(userGuess)
-
+// check clicked answer against choices
 if(this.value === questions[questionCounter].answer) {
     alert('Correct');
     questionCounter++;
@@ -145,38 +145,18 @@ $("#incorrect").css('display', 'none');
 startGame(); 
 }
 nextQuestion();
-
+// incorrect answers
 if(incorrectAnswer === 6) {
     $("#question").css('display', 'none');
     $("#timer").css('display', 'none');
     $("#incorrect").css('display', 'none');
     setTimeout(function() {
-        alert("You lose, please play again");              
+        alert("You suck, loser");              
     }, 500);   
 }
 startGame();
       
 });
-
-// display questions on buttons
-
-
-// timer set to 20 seconds. starts counting down when page loads
-
-
-
-// if answer is correct then correct answer counter goes up one
-
-// if answer is incorrect then incorrect answer goes up one
-
-// next question is loaded
-
-// if timer expires then incorrect answer counter adds one. next question loads
-
-// if incorrect answer reaches 6 then game over alert
-
-// if all questions answered correctly and incorrect under 6, alert you win
-// remove question from screen
 
 })
 
